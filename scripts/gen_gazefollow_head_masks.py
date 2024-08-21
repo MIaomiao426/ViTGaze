@@ -60,7 +60,7 @@ def plot_ori(label_path, data_dir):
 
     for image_name, group_df in tqdm.tqdm(grouped, desc="Generating masks with annotations: "):
         if not os.path.exists(os.path.join(output_dir, image_name)):
-            w, h = Image.open(image_name).size
+            w, h = Image.open(os.path.join(dataset_dir, image_name)).size
             heatmap = np.zeros((h, w), dtype=np.float32)
             indices = np.meshgrid(
                 np.linspace(0.0, float(w), num=w, endpoint=False),
@@ -89,7 +89,7 @@ def plot_gen(df, data_dir):
     output_dir = os.path.join(data_dir, "head_masks")
 
     for image_name, group_df in tqdm.tqdm(grouped, desc="Generating masks with predictions: "):
-        w, h = Image.open(image_name).size
+        w, h = Image.open(os.path.join(dataset_dir, image_name)).size
         heatmap = np.zeros((h, w), dtype=np.float32)
         indices = np.meshgrid(
             np.linspace(0.0, float(w), num=w, endpoint=False),
@@ -182,4 +182,4 @@ if __name__ == "__main__":
     df.to_csv(os.path.join(args.dataset_dir, f"{args.subset}_head.csv"), index=False)
 
     plot_gen(df, args.dataset_dir)
-    plot_ori(label_path, args.data_dir)
+    plot_ori(label_path, args.dataset_dir)
